@@ -11,6 +11,7 @@ from shutil import rmtree
 
 
 def main():
+    print("waa")
     choice = input("Video (V), Image (I) or Livetext (L): ").upper()
     if choice == "V":
         video()
