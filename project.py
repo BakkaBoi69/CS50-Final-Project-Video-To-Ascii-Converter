@@ -11,7 +11,7 @@ from shutil import rmtree
 
 
 def main():
-    print("waa")
+    print("Welcome to the video to ascii converter!")
     choice = input("Video (V), Image (I) or Livetext (L): ").upper()
     if choice == "V":
         video()
@@ -20,9 +20,10 @@ def main():
     elif choice == "L":
         video_fp = get_video_fp()
         frames = extract(video_fp)
+        fps = get_fps(video_fp)
         # size = int(input("Size of display (in characters): "))
         input("Press enter to start: ")
-        livetext(frames)
+        livetext(frames, fps)
     else:
         exit("Invalid input: please enter V, I or L")
 
@@ -55,11 +56,12 @@ def image():
     ascii_img.save("./test220.png") # saves the image; filepath to destination where it must be saved
 
 
-def livetext(frames):
+def livetext(frames, fps):
     for i in range(frames): #6572 for my video
         print(i) # just prints the frames number; optional
-        image = Image.open("./unconverted_frames/frame"+str(i)+".jpeg")
-        img_to_ascii(greyify(resize(image, 180)), ('d', 30)) # just plays the ascii images
+        image = Image.open("./bin/unconverted_frames/frame"+str(i)+".jpeg")
+        img_to_ascii(greyify(resize(image, 180)), ('d', fps)) # just plays the ascii images
+    rmtree("./bin") # deletes the bin folder
     return None
 
 
@@ -98,7 +100,7 @@ def make_video(frame, size, fps, video_fp):
     out.release()
     make_audio(video_fp)
     paste_audio()
-    rmtree("./bin")
+    rmtree("./bin") # deletes the bin folder
     
 
 def make_audio(video_fp):
