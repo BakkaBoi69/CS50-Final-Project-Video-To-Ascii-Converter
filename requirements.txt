@@ -1,4 +1,4 @@
-python-opencv 
+opencv-python
 imageio
 Pillow
 ffmpeg

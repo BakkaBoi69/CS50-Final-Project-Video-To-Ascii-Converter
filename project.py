@@ -16,7 +16,7 @@ def main():
     if choice == "V":
         video()
     elif choice == "I":
-        image()
+        image(get_image_fp())
     elif choice == "L":
         video_fp = get_video_fp()
         frames = extract(video_fp)
@@ -48,12 +48,21 @@ def get_video_fp():
     else: 
         raise FileNotFoundError("The filepath provided for the video doesn't exist")
         #if filepath doesn't exist, raise error and exit
+        
+
+def get_image_fp():
+    ans = input("Enter image filepath: ")
+    if os.path.exists(ans):
+        return ans
+    else: 
+        raise FileNotFoundError("The filepath provided for the image doesn't exist")
+        #if filepath doesn't exist, raise error and exit
 
 
-def image():
-    image = Image.open("./files/cat.jpeg") # give filepath to target image
-    ascii_img, width, height = imgfile(img_to_ascii(greyify(resize(image))), image.size) # width and height 
-    ascii_img.save("./test220.png") # saves the image; filepath to destination where it must be saved
+def image(image_fp):
+    image = Image.open(image_fp) # give filepath to target image
+    ascii_img, _, __ = imgfile(img_to_ascii(greyify(resize(image))), image.size) # width and height 
+    ascii_img.save("./output.png") # saves the image; filepath to destination where it must be saved
 
 
 def livetext(frames, fps):
