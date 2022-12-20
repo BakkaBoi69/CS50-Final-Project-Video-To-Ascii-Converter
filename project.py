@@ -2,7 +2,7 @@
 import cv2, os
 from PIL import Image, ImageFont, ImageDraw
 from math import floor
-from time import sleep
+import time
 import moviepy.editor as mp
 import ffmpeg, subprocess
 from sys import exit
@@ -55,10 +55,17 @@ def image():
 
 
 def livetext(frames):
-    for i in range(frames): #6572 for my video
-        print(i) # just prints the frames number; optional
-        image = Image.open("./unconverted_frames/frame"+str(i)+".jpeg")
-        img_to_ascii(greyify(resize(image, 180)), ('d', 30)) # just plays the ascii images
+    start = time.time()
+    try:
+        for i in range(frames): #6572 for my video
+            print(i) # just prints the frames number; optional
+            image = Image.open("./bin/unconverted_frames/frame"+str(i)+".jpeg")
+            img_to_ascii(greyify(resize(image, 180)), ('d', 30)) # just plays the ascii images
+        end = time.time()
+        print(frames / (end - start)) # prints the time taken to process each frame
+    except KeyboardInterrupt:
+        end = time.time()
+        exit(i / (end - start))
     return None
 
 
@@ -187,7 +194,10 @@ def img_to_ascii(image, w=("nothing", 0)):
         print(ascii_img_data) 
         # print("\n" * 17)
         # you can add \n's to adjust the spacing between frames for a cleaner look in the terminal
-        sleep((1/w[1])/1.6)
+        if w[1] == 25:
+            time.sleep(((1/w[1])/1.63) - 0.00002 + 0.00000000107)
+        elif w[1] == 30:
+            time.sleep(((1/w[1])/1.63) - 0.00228)
         subprocess.run("clear")
         # change the sleep parameter depending upon the fps so that video doesn't play too fast
         return None
