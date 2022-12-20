@@ -11,17 +11,19 @@ from shutil import rmtree
 
 
 def main():
+    print("Welcome to the video to ascii converter!")
     choice = input("Video (V), Image (I) or Livetext (L): ").upper()
     if choice == "V":
         video()
     elif choice == "I":
-        image()
+        image(get_image_fp())
     elif choice == "L":
         video_fp = get_video_fp()
         frames = extract(video_fp)
+        fps = get_fps(video_fp)
         # size = int(input("Size of display (in characters): "))
         input("Press enter to start: ")
-        livetext(frames)
+        livetext(frames, fps)
     else:
         exit("Invalid input: please enter V, I or L")
 
@@ -46,26 +48,33 @@ def get_video_fp():
     else: 
         raise FileNotFoundError("The filepath provided for the video doesn't exist")
         #if filepath doesn't exist, raise error and exit
+        
+
+def get_image_fp():
+    ans = input("Enter image filepath: ")
+    if os.path.exists(ans):
+        return ans
+    else: 
+        raise FileNotFoundError("The filepath provided for the image doesn't exist")
+        #if filepath doesn't exist, raise error and exit
 
 
-def image():
-    image = Image.open("./files/cat.jpeg") # give filepath to target image
-    ascii_img, width, height = imgfile(img_to_ascii(greyify(resize(image))), image.size) # width and height 
-    ascii_img.save("./test220.png") # saves the image; filepath to destination where it must be saved
+def image(image_fp):
+    image = Image.open(image_fp) # give filepath to target image
+    ascii_img, _, __ = imgfile(img_to_ascii(greyify(resize(image))), image.size) # width and height 
+    ascii_img.save("./output.png") # saves the image; filepath to destination where it must be saved
 
 
-def livetext(frames):
-    start = time.time()
+def livetext(frames, fps):
     try:
         for i in range(frames): #6572 for my video
             print(i) # just prints the frames number; optional
             image = Image.open("./bin/unconverted_frames/frame"+str(i)+".jpeg")
-            img_to_ascii(greyify(resize(image, 180)), ('d', 30)) # just plays the ascii images
-        end = time.time()
-        print(frames / (end - start)) # prints the time taken to process each frame
+            img_to_ascii(greyify(resize(image, 180)), ('d', fps)) # just plays the ascii images
     except KeyboardInterrupt:
-        end = time.time()
-        exit(i / (end - start))
+        rmtree("./bin")
+        exit("\n\nExiting...")
+    rmtree("./bin") # deletes the bin folder
     return None
 
 
@@ -104,7 +113,7 @@ def make_video(frame, size, fps, video_fp):
     out.release()
     make_audio(video_fp)
     paste_audio()
-    rmtree("./bin")
+    rmtree("./bin") # deletes the bin folder
     
 
 def make_audio(video_fp):
