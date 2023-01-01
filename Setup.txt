@@ -1,4 +1,4 @@
-it'll take a bit of effort to set this up
+It'll take a bit of effort to set this up
 the most difficult part should be the python installation
 and pip installation which is not that difficult i think
 
