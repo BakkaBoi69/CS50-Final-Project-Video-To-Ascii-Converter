@@ -20,8 +20,6 @@ Therefore I chose this project.
 This next bit is more preferrably done in vsc or any text editor rather 
 than in the terminal/command prompt but it can be done them too
 
-
-#### INSTALLING NECESSARY MODULES:
 Run "python module_installer.py"
 
 **OR IF THAT DOESN'T WORK THEN FOLLOW STEPS BELOW**
@@ -29,6 +27,17 @@ Run "python module_installer.py"
 Run "pip install module_name" for each module which is required. 
 You'll find the list of module names in "requirements.txt".
 After that, you should be able to run the program
+
+## Files and their purposes:
+The "project.py" file has all the main code and does all the logic and heavy lifting.
+
+There is a "requirements.txt" file which has the list of all the pip installable modules required to run this program.
+
+The "module_installer.py" file is a program that will automatically install all the required modules to run the main program.
+
+The "test_project.py" file is a unit test file written for the main program.
+
+The "test_files" directory (folder) contains images and videos to test the main program (project.py) with using the tester program (test_project.py).
 
 ## Challenges I faced:
 Safe to say that when I started this project, I had no idea where to start from or what libraries to use.
