@@ -61,4 +61,4 @@ After that, I thanked him a lot and went to finish up the video implementation c
 The Livetext mode for 60 fps video is not functional as of yet, I am working on that and will update this README once it is supported
 
 ## Special Thanks:
-The friend mentioned above is [Kratospidey](https://github.com/Kratospidey), he has done a lot of cool programming stuff and is great and finding things.
+The friend mentioned above is [Kratospidey](https://github.com/Kratospidey), he has done a lot of cool programming stuff and is great at finding things.
