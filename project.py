@@ -1,3 +1,7 @@
+# Welcome to the Video to Ascii converter!
+# This project is a video to ascii converter, it can also show a "livetext" version of the video (without sound)
+# and also convert images to ascii art
+
 # Importing all necessary libraries
 import cv2, os
 from PIL import Image, ImageFont, ImageDraw
@@ -21,7 +25,6 @@ def main():
         video_fp = get_video_fp()
         frames = extract(video_fp)
         fps = get_fps(video_fp)
-        # size = int(input("Size of display (in characters): "))
         input("Press enter to start: ")
         livetext(frames, fps)
     else:
@@ -33,10 +36,18 @@ def get_size():
         size = int(input("Width of display (in characters; original ratio is preserved): "))
     except ValueError:
         exit("Invalid input: size must be an integer")
+    
+    if size <= 10:
+        exit("Invalid input: size must be greater than 10")
     return size
 
 
 def get_fps(video_fp):
+    # test if the file is a video
+    if ".jpeg" in video_fp or ".jpg" in video_fp or ".png" in video_fp:
+        exit("Invalid input: Must be a video file")
+        
+    # get the fps of the video
     fps = cv2.VideoCapture(video_fp).get(cv2.CAP_PROP_FPS)
     return fps
     
@@ -187,22 +198,22 @@ def resize(image, new_width=220):
 def img_to_ascii(image, w=("nothing", 0)):
     pixels = image.getdata()
     width = image.size[0]
+    
     # these are all character sets
     chars = "$@B%8&WM*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1{}[]?-_+~i!lI;:,\"^`\'  "
     # chars2 = "@#S%?*+;:,."
     # chars3 = chars[::2]
+    
+    # and these are the logic operations behind the conversions for each character set respectively
     char_data = "".join([chars[floor(pixel/3.86)]*2 for pixel in pixels])
     # char_data = "".join([chars2[floor(pixel/25)]*2 for pixel in pixels])
     # char_data = "".join([chars3[floor(pixel/7.7)]*2 for pixel in pixels])
+    
     # joining the \n so that not everything is in one line
     ascii_img_data = "\n".join(char_data[i:(i + width*2)] for i in range(0, len(char_data), width*2))
     # this option is reserved for the liveview mode which will play the video in the terminal (no sound)
     if w[0] == 'd':
-        # with open("test.txt", 'w') as file:
-        #     file.write(ascii_img_data)
         print(ascii_img_data) 
-        # print("\n" * 17)
-        # you can add \n's to adjust the spacing between frames for a cleaner look in the terminal
         if w[1] == 25:
             time.sleep(((1/w[1])/1.63) - 0.00002 + 0.00000000107)
         elif w[1] == 30:
