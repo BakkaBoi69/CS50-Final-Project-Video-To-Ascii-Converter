@@ -29,20 +29,23 @@ def main():
         video_fp = get_video_fp()
         frames = extract(video_fp)
         fps = get_fps(video_fp)
-        input("Press enter to start: ")
-        livetext(frames, fps)
+        size = get_size()
+        livetext(frames, fps, size)
     else:
         exit("Invalid input: please enter V, I or L")
 
 
 def get_size():
-    try:
-        size = int(input("Width of display (in characters; original ratio is preserved): "))
-    except ValueError:
-        exit("Invalid input: size must be an integer")
-    
-    if size <= 10:
-        exit("Invalid input: size must be greater than 10")
+    while True:
+        try:
+            size = int(input("Width of display (in characters; original ratio is preserved): "))
+        except ValueError:
+            print("Invalid input: size must be an integer")
+        else:
+            if size <= 10:
+                print("Invalid input: size must be greater than 10")    
+            else:
+                break 
     return size
 
 
@@ -80,12 +83,12 @@ def image(image_fp):
     ascii_img.save("./output.png") # saves the image; filepath to destination where it must be saved
 
 
-def livetext(frames, fps):
+def livetext(frames, fps, size):
     try:
         for i in range(frames): #6572 for my video
             print(i) # just prints the frames number; optional
             image = Image.open("./bin/unconverted_frames/frame"+str(i)+".jpeg")
-            img_to_ascii(greyify(resize(image, 180)), ('d', fps)) # just plays the ascii images
+            img_to_ascii(greyify(resize(image, size)), ('d', fps)) # just plays the ascii images
     except KeyboardInterrupt:
         rmtree("./bin")
         exit("\n\nExiting...")
