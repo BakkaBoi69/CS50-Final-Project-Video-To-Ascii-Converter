@@ -16,7 +16,11 @@ from shutil import rmtree
 
 def main():
     print("Welcome to the video to ascii converter!")
-    choice = input("Video (V), Image (I) or Livetext (L): ").upper()
+    try:
+        choice = input("Video (V), Image (I) or Livetext (L): ").upper()
+    except KeyboardInterrupt:
+        exit("\nExitting...")
+    
     if choice == "V":
         video()
     elif choice == "I":
